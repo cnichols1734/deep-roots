@@ -384,7 +384,11 @@
             </div>
           </div>
 
-          <form class="form" aria-label="Quote request form" onsubmit="return false;">
+          <form class="form" aria-label="Quote request form" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="ba813ac3-8aae-44e0-aaaf-5c97b185dc8d">
+            <input type="hidden" name="subject" value="New Quote Request - Deep Roots Nursery">
+            <input type="checkbox" name="botcheck" style="display: none;">
+            
             <label>
               <span>Name</span>
               <input type="text" name="name" autocomplete="name" placeholder="Your name" required />
@@ -397,20 +401,20 @@
 
             <label>
               <span>Email</span>
-              <input type="email" name="email" autocomplete="email" placeholder="you@example.com" />
+              <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required />
             </label>
 
             <label>
               <span>What do you need?</span>
-              <textarea name="details" rows="5" placeholder="Plants, materials, delivery, irrigation, landscape design — give us the basics." required></textarea>
+              <textarea name="message" rows="5" placeholder="Plants, materials, delivery, irrigation, landscape design — give us the basics." required></textarea>
             </label>
 
             <div class="form-actions">
-              <button class="btn btn-primary btn-block" type="submit" data-fake-submit>Send Request</button>
+              <button class="btn btn-primary btn-block" type="submit">Send Request</button>
               <a class="btn btn-soft btn-block" href="tel:+12819678098">Or call (281) 967-8098</a>
             </div>
 
-            <p class="micro" data-form-note>Form is client-side only. It will open your email app with the details.</p>
+            <p class="micro" data-form-note>We'll get back to you soon!</p>
           </form>
         </div>
       </div>
