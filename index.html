@@ -384,38 +384,88 @@
             </div>
           </div>
 
-          <form class="form" aria-label="Quote request form" action="https://api.web3forms.com/submit" method="POST">
-            <input type="hidden" name="access_key" value="ba813ac3-8aae-44e0-aaaf-5c97b185dc8d">
-            <input type="hidden" name="subject" value="New Quote Request - Deep Roots Nursery">
-            <input type="checkbox" name="botcheck" style="display: none;">
-            
-            <label>
-              <span>Name</span>
-              <input type="text" name="name" autocomplete="name" placeholder="Your name" required />
-            </label>
+          <form id="bd-contact-form" class="form" aria-label="Quote request form">
+            <input type="hidden" name="access_key" value="334UVPHcGc3awLCv_mbWD7SXkzZqV4kWH1DSqpz26CSEcYXwH3IT2TB7_MkdS1Q8">
 
             <label>
-              <span>Phone</span>
-              <input type="tel" name="phone" autocomplete="tel" placeholder="(###) ###-####" />
+              <span>Name</span>
+              <input type="text" name="name" id="name" autocomplete="name" placeholder="Your name" required />
             </label>
 
             <label>
               <span>Email</span>
-              <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required />
+              <input type="email" name="email" id="email" autocomplete="email" placeholder="you@example.com" required />
+            </label>
+
+            <label>
+              <span>Phone</span>
+              <input type="tel" name="phone" id="phone" autocomplete="tel" placeholder="(###) ###-####" />
             </label>
 
             <label>
               <span>What do you need?</span>
-              <textarea name="message" rows="5" placeholder="Plants, materials, delivery, irrigation, landscape design — give us the basics." required></textarea>
+              <textarea name="message" id="message" rows="5" placeholder="Plants, materials, delivery, irrigation, landscape design — give us the basics." required></textarea>
             </label>
 
             <div class="form-actions">
-              <button class="btn btn-primary btn-block" type="submit">Send Request</button>
+              <button class="btn btn-primary btn-block" type="submit">Send Message</button>
               <a class="btn btn-soft btn-block" href="tel:+12819678098">Or call (281) 967-8098</a>
             </div>
 
             <p class="micro" data-form-note>We'll get back to you soon!</p>
           </form>
+
+          <div id="bd-form-toast" style="display:none;position:fixed;top:1.5rem;right:1.5rem;padding:1rem 1.5rem;border-radius:8px;font-size:15px;font-weight:500;z-index:9999;transition:opacity .4s;box-shadow:0 4px 12px rgba(0,0,0,.15);"></div>
+
+          <script>
+          (function() {
+            var form = document.getElementById('bd-contact-form');
+            var toast = document.getElementById('bd-form-toast');
+
+            function showToast(msg, success) {
+              toast.textContent = msg;
+              toast.style.background = success ? '#dcfce7' : '#fee2e2';
+              toast.style.color = success ? '#166534' : '#991b1b';
+              toast.style.border = '1px solid ' + (success ? '#bbf7d0' : '#fecaca');
+              toast.style.opacity = '1';
+              toast.style.display = 'block';
+              setTimeout(function() {
+                toast.style.opacity = '0';
+                setTimeout(function() { toast.style.display = 'none'; }, 400);
+              }, 5000);
+            }
+
+            form.addEventListener('submit', function(e) {
+              e.preventDefault();
+              var btn = form.querySelector('button[type="submit"]');
+              var originalText = btn.textContent;
+              btn.textContent = 'Sending...';
+              btn.disabled = true;
+
+              fetch('https://portal.belvieudigital.com/api/forms/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(Object.fromEntries(new FormData(form)))
+              })
+              .then(function(r) { return r.json(); })
+              .then(function(data) {
+                if (data.ok) {
+                  showToast('Message sent! We will be in touch soon.', true);
+                  form.reset();
+                } else {
+                  showToast(data.error || 'Something went wrong. Please try again.', false);
+                }
+              })
+              .catch(function() {
+                showToast('Network error. Please check your connection and try again.', false);
+              })
+              .finally(function() {
+                btn.textContent = originalText;
+                btn.disabled = false;
+              });
+            });
+          })();
+          </script>
         </div>
       </div>
     </section>

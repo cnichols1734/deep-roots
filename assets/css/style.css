@@ -113,6 +113,7 @@ a:hover{text-decoration:underline}
   letter-spacing:-.01em;
   border:1px solid transparent;
   text-decoration:none;
+  cursor:pointer;
 }
 .btn:hover{text-decoration:none}
 .btn-block{width:100%}
